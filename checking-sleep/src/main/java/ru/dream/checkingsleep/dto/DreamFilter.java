@@ -4,19 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.dream.checkingsleep.model.Comment;
-import ru.dream.checkingsleep.model.Tag;
-import ru.dream.checkingsleep.model.User;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-public class DreamDto {
+public class DreamFilter {
+    private Pageable pageable;
     private UUID id;
     private UserDto user;
     private LocalDateTime dayStart;

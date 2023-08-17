@@ -3,8 +3,10 @@ package ru.dream.checkingsleep.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -12,10 +14,11 @@ import java.util.Set;
 @Getter
 @Entity
 @Setter
+@Table(name = "user")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     @Column(nullable = false)
     private String mail;
@@ -30,7 +33,7 @@ public class User {
     private String childName;
 
     @Column(nullable = false)
-    private Long childAge;
+    private LocalDate dateOfBirght;
 
     @Column
     private String momName;
@@ -48,9 +51,9 @@ public class User {
     private String dadPhoto;
 
     @Column
-    @ManyToMany (fetch = FetchType.LAZY)
-    @JoinTable (name = "user_role",
-    joinColumns = @JoinColumn(name = "user_id"),
-    inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set <Role> roles = new HashSet<>();
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 }

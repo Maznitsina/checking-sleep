@@ -1,13 +1,16 @@
 package ru.dream.checkingsleep.mappers;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
+import org.springframework.stereotype.Component;
 import ru.dream.checkingsleep.dto.TagDto;
+import ru.dream.checkingsleep.mappers.basic.BaseMapper;
 import ru.dream.checkingsleep.model.Tag;
 
-@Mapper
-public interface TagMapper {
-    TagMapper INSTANCE = Mappers.getMapper(TagMapper.class);
 
-    TagDto tagToDto(Tag tag);
+@Component
+@Mapper(config = MappingConfig.class, componentModel = "spring")
+public interface TagMapper extends BaseMapper<TagDto, Tag> {
+
+    TagDto toCreateTag
+
 }

@@ -1,5 +1,6 @@
 package ru.dream.checkingsleep.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,6 +10,7 @@ import ru.dream.checkingsleep.model.Dream;
 import ru.dream.checkingsleep.service.CommentService;
 @RestController
 @RequiredArgsConstructor
+@SecurityRequirement(name = "dreams-users")
 public class CommentController {
 
     private final CommentService commentService;

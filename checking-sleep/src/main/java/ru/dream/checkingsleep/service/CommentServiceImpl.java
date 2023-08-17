@@ -18,6 +18,7 @@ import ru.dream.checkingsleep.repository.CommentRepository;
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
+    private final CommentMapper commentMapper;
 
     @Override
     public CommentDto getCommentByDream(Dream dream) {
@@ -30,7 +31,7 @@ public class CommentServiceImpl implements CommentService {
             }
         });
         Comment comment = commentRepository.findOne(specification).orElseThrow();
-        return CommentMapper.INSTANCE.commentToDto(comment);
+        return commentMapper.toDto(comment);
 
     }
 }

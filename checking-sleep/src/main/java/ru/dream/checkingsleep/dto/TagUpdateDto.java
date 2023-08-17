@@ -11,8 +11,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Data
 @Builder
-public class TagDto {
-
+public class TagUpdateDto {
     private UUID id;
     private String tag;
 }
