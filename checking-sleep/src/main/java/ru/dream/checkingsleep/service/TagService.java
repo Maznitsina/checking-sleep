@@ -5,12 +5,17 @@ import ru.dream.checkingsleep.dto.TagCreateDto;
 import ru.dream.checkingsleep.dto.TagDto;
 import ru.dream.checkingsleep.dto.TagUpdateDto;
 import ru.dream.checkingsleep.model.Dream;
+
+import java.util.UUID;
+
 @Service
 public interface TagService {
 
     TagDto getTagByDream(Dream dream);
 
-    TagDto createTag(TagCreateDto tagCreateDto);
+    TagCreateDto createTag(TagCreateDto tagCreateDto);
 
-    TagDto updateTag(TagUpdateDto tagUpdateDto);
+    TagUpdateDto updateTag(TagUpdateDto tagUpdateDto);
+
+    void deleteTag(UUID id);
 }

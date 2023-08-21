@@ -22,9 +22,8 @@ public class TagController {
         return tagService.getTagByDream(dream);
     }
     @PostMapping("/tag/create")
-    TagDto createTag(@RequestBody TagCreateDto tagCreateDto) {
+    TagCreateDto createTag(@RequestBody TagCreateDto tagCreateDto) {
         return tagService.createTag(tagCreateDto);
     }
-
 
 }

@@ -4,12 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.dream.checkingsleep.model.Comment;
-import ru.dream.checkingsleep.model.Tag;
-import ru.dream.checkingsleep.model.User;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor

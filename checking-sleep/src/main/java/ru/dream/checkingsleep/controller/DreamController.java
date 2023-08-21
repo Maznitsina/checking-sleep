@@ -19,17 +19,17 @@ public class DreamController {
     private final DreamService dreamService;
     private final DreamFilter dreamFilter;
 
-    @GetMapping("dream/{id}")
+  /*  @GetMapping("dream/{id}")
     Page<DreamDto> getDreambyUser(@PathVariable DreamFilter filter) {
         return dreamService.getDreamByUser(dreamFilter.getUser());
-    }
+    }*/
     @PostMapping("/dream/create")
-    DreamDto createDream(@RequestBody DreamCreateDto dreamCreateDto) {
+    DreamCreateDto createDream(@RequestBody DreamCreateDto dreamCreateDto) {
         return dreamService.createDream(dreamCreateDto);
     }
 
     @PutMapping("/dream/update")
-    DreamDto updateDream(@RequestBody DreamUpdateDto dreamUpdateDto) {
+    DreamUpdateDto updateDream(@RequestBody DreamUpdateDto dreamUpdateDto) {
         return dreamService.updateDream(dreamUpdateDto);
     }
 
@@ -37,5 +37,4 @@ public class DreamController {
     void deleteDream(@PathVariable("id") UUID id) {
         dreamService.deleteDream(id);
     }
-
 }

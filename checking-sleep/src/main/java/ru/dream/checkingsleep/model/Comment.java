@@ -16,10 +16,10 @@ import java.util.UUID;
 @Table(name = "comment")
 public class Comment {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
     private Dream dream;
 
     @Column

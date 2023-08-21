@@ -4,8 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -16,6 +15,9 @@ import java.util.UUID;
 @Setter
 @Table(name = "user")
 public class User {
+
+    private MongoPhoto mongoPhoto;
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -36,6 +38,9 @@ public class User {
     private LocalDate dateOfBirght;
 
     @Column
+    private String temperament;
+
+    @Column
     private String momName;
 
     @Column
@@ -50,10 +55,10 @@ public class User {
     @Column
     private String dadPhoto;
 
-    @Column
+/*    @Column
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+    private Set<Role> roles = new HashSet<>();*/
 }

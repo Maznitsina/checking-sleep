@@ -60,12 +60,12 @@ public class UserDetailImpl implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-    public static UserDetailImpl build (User user) {
+  /*  public static UserDetailImpl build (User user) {
         List<GrantedAuthority> authorities = user.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName().name()))
                 .collect(Collectors.toList());
 
         return new UserDetailImpl(user.getId(), user.getMail(), user.getPassword(), authorities);
-    }
+    }*/
 
 }

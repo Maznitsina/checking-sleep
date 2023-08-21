@@ -6,24 +6,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-public class UserDto {
-    private UUID id;
-    private String mail;
-    private String password;
-    private String roles;
-    private String childName;
-    private LocalDate dateOfBirght;
-    private String temperament;
-    private String momName;
-    private String dadName;
+public class MongoPhotoDto {
+
+    private String id;
+
     private String childPhoto;
+
     private String momPhoto;
+
     private String dadPhoto;
 }
