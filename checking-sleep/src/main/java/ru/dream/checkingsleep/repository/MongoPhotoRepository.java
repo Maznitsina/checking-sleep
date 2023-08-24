@@ -6,7 +6,7 @@ import ru.dream.checkingsleep.model.MongoPhoto;
 import java.util.Optional;
 
 @EnableMongoRepositories
-public interface MongoPhotoRepository extends MongoRepository<MongoPhoto, Long> {
+public interface MongoPhotoRepository extends MongoRepository<MongoPhoto, String> {
 
     Optional<MongoPhoto> findById(String id);
     Optional<MongoPhoto> findChildPhotoById(String id);

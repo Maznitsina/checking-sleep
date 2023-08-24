@@ -23,7 +23,7 @@ public interface DreamRepository extends JpaRepository<Dream, UUID> {
     Optional<Dream> findById(UUID id);
 
     void deleteById(UUID id);
-    Optional<Dream> findByUser(UserDto user);
+    List <Dream> findByUser(UserDto user);
 
 
     List<Dream> findAllByDayStartIsBeforeAndDayFinishIsAfter(LocalDateTime dayStart, LocalDateTime dayFinish);

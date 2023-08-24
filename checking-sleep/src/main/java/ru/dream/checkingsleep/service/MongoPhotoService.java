@@ -17,6 +17,6 @@ public interface MongoPhotoService {
     MongoPhotoDto updateMomPhoto(MongoPhotoDto mongoPhotoDto);
 
     MongoPhotoDto updateDadPhoto(MongoPhotoDto mongoPhotoDto);
-    void deletePhoto(Long id);
+    void deletePhoto(String id);
 
 }

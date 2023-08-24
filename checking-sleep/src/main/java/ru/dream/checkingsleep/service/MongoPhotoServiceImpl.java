@@ -3,15 +3,20 @@ package ru.dream.checkingsleep.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.dream.checkingsleep.dto.MongoPhotoDto;
+import ru.dream.checkingsleep.dto.UserDto;
 import ru.dream.checkingsleep.mappers.MongoPhotoMapper;
 import ru.dream.checkingsleep.model.MongoPhoto;
 import ru.dream.checkingsleep.repository.MongoPhotoRepository;
+
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class MongoPhotoServiceImpl implements MongoPhotoService {
     private final MongoPhotoRepository mongoPhotoRepository;
     private final MongoPhotoMapper mongoPhotoMapper;
+    private final UserService userService;
+
 
     public MongoPhotoDto getChildPhotoById(String id) {
         MongoPhoto mongoPhoto = mongoPhotoRepository.findChildPhotoById(id)
@@ -57,7 +62,7 @@ public class MongoPhotoServiceImpl implements MongoPhotoService {
         return mongoPhotoMapper.toDto(savedDadPhoto);
     }
 
-    public void deletePhoto(Long id) {
+    public void deletePhoto(String id) {
         mongoPhotoRepository.deleteById(id);
     }
 }

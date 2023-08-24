@@ -10,6 +10,7 @@ import ru.dream.checkingsleep.dto.DreamFilter;
 import ru.dream.checkingsleep.dto.DreamUpdateDto;
 import ru.dream.checkingsleep.service.DreamService;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -17,12 +18,14 @@ import java.util.UUID;
 @SecurityRequirement(name = "dreams-users")
 public class DreamController {
     private final DreamService dreamService;
-    private final DreamFilter dreamFilter;
-
-  /*  @GetMapping("dream/{id}")
-    Page<DreamDto> getDreambyUser(@PathVariable DreamFilter filter) {
-        return dreamService.getDreamByUser(dreamFilter.getUser());
-    }*/
+    @GetMapping("dream/{id}")
+    DreamDto getDreamById(@PathVariable("id") UUID id) {
+        return dreamService.getDreamById(id);
+    }
+    @GetMapping("dream/all/{id}")
+    List<DreamDto> getAllDreams(@PathVariable("id") UUID id){
+        return dreamService.getAllDreams();
+    }
     @PostMapping("/dream/create")
     DreamCreateDto createDream(@RequestBody DreamCreateDto dreamCreateDto) {
         return dreamService.createDream(dreamCreateDto);

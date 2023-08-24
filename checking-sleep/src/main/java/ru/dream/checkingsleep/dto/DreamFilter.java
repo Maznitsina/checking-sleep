@@ -8,12 +8,12 @@ import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
-@AllArgsConstructor
+/*@AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Builder
+@Builder*/
 public class DreamFilter {
-    private Pageable pageable;
+/*    private Pageable pageable;
     private UUID id;
     private UserDto user;
     private LocalDateTime dayStart;
@@ -21,6 +21,6 @@ public class DreamFilter {
     private LocalDateTime nightStart;
     private LocalDateTime nightFinish;
     private CommentDto comment;
-    private TagDto tag;
+    private TagDto tag;*/
 
 }

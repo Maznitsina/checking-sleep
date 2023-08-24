@@ -16,8 +16,6 @@ import java.util.UUID;
 @Table(name = "user")
 public class User {
 
-    private MongoPhoto mongoPhoto;
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -47,18 +45,12 @@ public class User {
     private String dadName;
 
     @Column
-    private String childPhoto;
+    private String childPhotoId;
 
     @Column
-    private String momPhoto;
+    private String momPhotoId;
 
     @Column
-    private String dadPhoto;
+    private String dadPhotoId;
 
-/*    @Column
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();*/
 }

@@ -17,13 +17,12 @@ public class UserDto {
     private UUID id;
     private String mail;
     private String password;
-    private String roles;
     private String childName;
     private LocalDate dateOfBirght;
     private String temperament;
     private String momName;
     private String dadName;
-    private String childPhoto;
-    private String momPhoto;
-    private String dadPhoto;
+    private String childPhotoId;
+    private String momPhotoId;
+    private String dadPhotoId;
 }

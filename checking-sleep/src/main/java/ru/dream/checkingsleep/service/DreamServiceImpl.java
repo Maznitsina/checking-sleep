@@ -9,14 +9,11 @@ import ru.dream.checkingsleep.dto.DreamUpdateDto;
 import ru.dream.checkingsleep.dto.UserDto;
 import ru.dream.checkingsleep.mappers.DreamMapper;
 import ru.dream.checkingsleep.model.Dream;
-import ru.dream.checkingsleep.repository.CommentRepository;
 import ru.dream.checkingsleep.repository.DreamRepository;
-import ru.dream.checkingsleep.repository.TagRepository;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -25,10 +22,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class DreamServiceImpl implements DreamService {
     private final DreamRepository dreamRepository;
-    private final TagRepository tagRepository;
-    private final CommentRepository commentRepository;
     private final DreamMapper dreamMapper;
-
 
     @Override
     public DreamDto getDreamById(UUID id) {
@@ -39,30 +33,26 @@ public class DreamServiceImpl implements DreamService {
 
     @Override
     public List<LocalDateTime> getDayStartById(UUID id) {
-        List<LocalDateTime> localDateTime = Collections.singletonList(dreamRepository.findDayStartById(id)
+        return Collections.singletonList(dreamRepository.findDayStartById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Not found")));
-        return (List<LocalDateTime>) dreamMapper.toDto((Dream) localDateTime);
     }
 
     @Override
     public List<LocalDateTime> getDayFinishById(UUID id) {
-        List<LocalDateTime> localDateTime = Collections.singletonList(dreamRepository.findDayFinishById(id)
+        return Collections.singletonList(dreamRepository.findDayFinishById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Not found")));
-        return (List<LocalDateTime>) dreamMapper.toDto((Dream) localDateTime);
     }
 
     @Override
     public List<LocalDateTime> getNightStartById(UUID id) {
-        List<LocalDateTime> localDateTime = Collections.singletonList(dreamRepository.findNightStartById(id)
+        return Collections.singletonList(dreamRepository.findNightStartById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Not found")));
-        return (List<LocalDateTime>) dreamMapper.toDto((Dream) localDateTime);
     }
 
     @Override
     public List<LocalDateTime> getNightFinishById(UUID id) {
-        List<LocalDateTime> localDateTime = Collections.singletonList(dreamRepository.findNightFinishById(id)
+        return Collections.singletonList(dreamRepository.findNightFinishById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Not found")));
-        return (List<LocalDateTime>) dreamMapper.toDto((Dream) localDateTime);
     }
 
     @Override
@@ -74,16 +64,21 @@ public class DreamServiceImpl implements DreamService {
     @Override
     public DreamUpdateDto updateDream(DreamUpdateDto dreamUpdateDto) {
         Dream dream = dreamRepository.findById(dreamUpdateDto.getId()).orElseThrow();
-        dream.setDayStart(dreamUpdateDto.getDayStart());
+        DreamUpdateDto dto = dreamMapper.toUpdateDto(dream);
+        Dream dream1 = dreamMapper.toUpdateEntity(dto);
+        Dream dream2 = dreamRepository.save(dream1);
+ /*     dream.setDayStart(dreamUpdateDto.getDayStart());
         dream.setDayFinish(dreamUpdateDto.getDayFinish());
         dream.setNightStart(dreamUpdateDto.getNightStart());
         dream.setNightFinish(dreamUpdateDto.getNightFinish());
-        dream.setComment(dreamUpdateDto.getComment(commentRepository.findByDream(dream)));
-        dream.setTags(dreamUpdateDto.getTag());
-
-        Dream savedDream = dreamRepository.save(dream);
-        return dreamMapper.toUpdateDto(savedDream);
-
+        var comment1 = dreamUpdateDto.getComment();
+        var commentModel = commentMapper.toUpdateEntity(comment1);
+        dream.setComment(commentModel);
+        var tag1 = dreamUpdateDto.getTag();
+        var tagModel = tagMapper.toUpdateEntity(tag1);
+        dream.setTags(Collections.singletonList(tagModel));
+        Dream savedDream = dreamRepository.save(dream); */
+        return dreamMapper.toUpdateDto(dream2);
     }
 
     @Override
@@ -101,8 +96,10 @@ public class DreamServiceImpl implements DreamService {
 
     @Override
     public List<DreamDto> getDreamByUser(UserDto user) {
-        Dream dream = dreamRepository.findByUser(user).orElseThrow();
-        return (List<DreamDto>) dreamMapper.toDto(dream);
+        List<Dream> dream = dreamRepository.findByUser(user);
+        return dream.stream()
+                .map(dreamMapper::toDto)
+                .collect(Collectors.toList());
     }
 
  /*  @Override

@@ -37,9 +37,12 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public CommentUpdateDto updateComment(CommentUpdateDto commentUpdateDto) {
         Comment comment = commentRepository.findById(commentUpdateDto.getId()).orElseThrow();
-        comment.setComment(commentUpdateDto.getComment());
-        Comment savedComment = commentRepository.save(comment);
-        return commentMapper.toUpdateDto(savedComment);
+        CommentUpdateDto updateComment = commentMapper.toUpdateDto(comment);
+        Comment comment1 = commentMapper.toUpdateEntity(updateComment);
+        Comment comment2 = commentRepository.save(comment1);
+//        comment.setComment(commentUpdateDto.getComment());
+//        Comment savedComment = commentRepository.save(comment);
+        return commentMapper.toUpdateDto(comment2);
     }
 
     @Override
