@@ -9,8 +9,7 @@ import java.util.Optional;
 public interface MongoPhotoRepository extends MongoRepository<MongoPhoto, String> {
 
     Optional<MongoPhoto> findById(String id);
-    Optional<MongoPhoto> findChildPhotoById(String id);
-    Optional<MongoPhoto> findDadPhotoById(String id);
-    Optional<MongoPhoto> findMomPhotoById(String id);
+    Optional<MongoPhoto> findPhotoById(String id);
+
 
 }

@@ -16,9 +16,6 @@ public class MongoPhotoDto {
 
     private String id;
 
-    private String childPhoto;
+    private byte[] photo;
 
-    private String momPhoto;
-
-    private String dadPhoto;
 }

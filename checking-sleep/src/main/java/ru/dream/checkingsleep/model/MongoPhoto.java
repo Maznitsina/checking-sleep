@@ -19,12 +19,7 @@ public class MongoPhoto {
     @Id
     private String id;
 
-    @Indexed(name = "childPhoto")
-    private String childPhoto;
+    @Indexed(name = "photo")
+    private byte[] photo;
 
-    @Indexed(name = "momPhoto")
-    private String momPhoto;
-
-    @Indexed(name = "dadPhoto")
-    private String dadPhoto;
 }
