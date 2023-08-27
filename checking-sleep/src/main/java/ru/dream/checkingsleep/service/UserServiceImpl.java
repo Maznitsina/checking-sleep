@@ -54,11 +54,11 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new IllegalArgumentException("Not found"));
         return mongoPhotoService.getPhotoById(user.getDadPhotoId());
     }
-    public MongoPhotoDto updateChildPhoto(UUID id, byte[] photo){
+    /*public MongoPhotoDto updateChildPhoto(UUID id, byte[] photo){
         User user = userRepository.findChildPhotoById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Not found"));
         return mongoPhotoService.updatePhoto(user.getChildPhotoId());
-    }
+    }*/
     public void deleteChildPhoto(UUID id) {
         User user = userRepository.findChildPhotoById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Not found"));
@@ -74,13 +74,13 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new IllegalArgumentException("Not found"));
         mongoPhotoService.deletePhoto(user.getDadPhotoId());
     }
-    public void createChildPhoto(UUID id, byte[] photo){
+  /*  public void createChildPhoto(UUID id, byte[] photo){
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Not found"));
         String photoId = mongoPhotoService.createPhoto(photo);
         user.setChildPhotoId(photoId);
         userRepository.save(user);
-    }
+    }*/
 
 
 

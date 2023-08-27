@@ -2,11 +2,10 @@ package ru.dream.checkingsleep.service;
 
 import org.springframework.stereotype.Service;
 import ru.dream.checkingsleep.dto.DreamCreateDto;
-import ru.dream.checkingsleep.dto.DreamDto;
 import ru.dream.checkingsleep.dto.DreamUpdateDto;
-import ru.dream.checkingsleep.dto.UserDto;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -14,14 +13,6 @@ import java.util.UUID;
 @Service
 public interface DreamService {
 
-    DreamDto getDreamById(UUID id);
-
-    List<LocalDateTime> getDayStartById(UUID id);
-
-    List<LocalDateTime> getDayFinishById(UUID id);
-    List<LocalDateTime> getNightStartById(UUID id);
-
-    List<LocalDateTime> getNightFinishById(UUID id);
 
     DreamCreateDto createDream (DreamCreateDto dreamCreateDto);
 
@@ -29,9 +20,12 @@ public interface DreamService {
 
     void deleteDream (UUID id);
 
-    List<DreamDto> getAllDreams();
+    public Map<LocalDate, List<DreamServiceImpl.SleepWakeInterval>> calculateSleepWakeIntervalsForDateRange(LocalDate startDate, LocalDate endDate);
+    class SleepWakeInterval {
+        private LocalTime startTime;
+        private LocalTime endTime;
+        private boolean isSleep;
+    }
 
-    List<DreamDto> getDreamByUser(UserDto user);
 
-   // Map<LocalDateTime, Double> getDiagrams(LocalDateTime dayStart, LocalDateTime dayFinish);
 }

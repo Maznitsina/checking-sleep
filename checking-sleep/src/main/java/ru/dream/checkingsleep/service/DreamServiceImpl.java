@@ -4,18 +4,18 @@ package ru.dream.checkingsleep.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.dream.checkingsleep.dto.DreamCreateDto;
-import ru.dream.checkingsleep.dto.DreamDto;
 import ru.dream.checkingsleep.dto.DreamUpdateDto;
-import ru.dream.checkingsleep.dto.UserDto;
 import ru.dream.checkingsleep.mappers.DreamMapper;
 import ru.dream.checkingsleep.model.Dream;
 import ru.dream.checkingsleep.repository.DreamRepository;
 
+import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.time.LocalTime;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @Service
@@ -23,37 +23,6 @@ import java.util.stream.Collectors;
 public class DreamServiceImpl implements DreamService {
     private final DreamRepository dreamRepository;
     private final DreamMapper dreamMapper;
-
-    @Override
-    public DreamDto getDreamById(UUID id) {
-        Dream dream = dreamRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Not found"));
-        return dreamMapper.toDto(dream);
-    }
-
-    @Override
-    public List<LocalDateTime> getDayStartById(UUID id) {
-        return Collections.singletonList(dreamRepository.findDayStartById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Not found")));
-    }
-
-    @Override
-    public List<LocalDateTime> getDayFinishById(UUID id) {
-        return Collections.singletonList(dreamRepository.findDayFinishById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Not found")));
-    }
-
-    @Override
-    public List<LocalDateTime> getNightStartById(UUID id) {
-        return Collections.singletonList(dreamRepository.findNightStartById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Not found")));
-    }
-
-    @Override
-    public List<LocalDateTime> getNightFinishById(UUID id) {
-        return Collections.singletonList(dreamRepository.findNightFinishById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Not found")));
-    }
 
     @Override
     public DreamCreateDto createDream(DreamCreateDto dreamCreateDto) {
@@ -67,17 +36,6 @@ public class DreamServiceImpl implements DreamService {
         DreamUpdateDto dto = dreamMapper.toUpdateDto(dream);
         Dream dream1 = dreamMapper.toUpdateEntity(dto);
         Dream dream2 = dreamRepository.save(dream1);
- /*     dream.setDayStart(dreamUpdateDto.getDayStart());
-        dream.setDayFinish(dreamUpdateDto.getDayFinish());
-        dream.setNightStart(dreamUpdateDto.getNightStart());
-        dream.setNightFinish(dreamUpdateDto.getNightFinish());
-        var comment1 = dreamUpdateDto.getComment();
-        var commentModel = commentMapper.toUpdateEntity(comment1);
-        dream.setComment(commentModel);
-        var tag1 = dreamUpdateDto.getTag();
-        var tagModel = tagMapper.toUpdateEntity(tag1);
-        dream.setTags(Collections.singletonList(tagModel));
-        Dream savedDream = dreamRepository.save(dream); */
         return dreamMapper.toUpdateDto(dream2);
     }
 
@@ -86,29 +44,84 @@ public class DreamServiceImpl implements DreamService {
         dreamRepository.deleteById(id);
     }
 
-    @Override
-    public List<DreamDto> getAllDreams() {
-        List<Dream> dreams = dreamRepository.findAll();
-        return dreams.stream()
-                .map(dreamMapper::toDto)
-                .collect(Collectors.toList());
+    public Map<LocalDate, List<SleepWakeInterval>> calculateSleepWakeIntervalsForDateRange(LocalDate startDate, LocalDate endDate) {
+        return Stream.iterate(startDate, date -> date.plusDays(1))
+                .limit(Duration.between(startDate.atStartOfDay(), endDate.plusDays(1).atStartOfDay()).toDays())
+                .collect(Collectors.toMap(
+                        date -> date,
+                        this::calculateSleepWakeIntervals
+                ));
     }
 
-    @Override
-    public List<DreamDto> getDreamByUser(UserDto user) {
-        List<Dream> dream = dreamRepository.findByUser(user);
-        return dream.stream()
-                .map(dreamMapper::toDto)
-                .collect(Collectors.toList());
+    public List<SleepWakeInterval> calculateSleepWakeIntervals(LocalDate date) {
+        List<Dream> dreams = dreamRepository.findByDate(date);
+
+        List<SleepWakeInterval> intervals = new ArrayList<>();
+        boolean[] isNightSleepArray = {true};
+        LocalDateTime[] previousEndTimeArray = {LocalDateTime.of(date, LocalTime.MIDNIGHT)};
+
+        if (dreams.isEmpty()) {
+            intervals.add(new SleepWakeInterval(!isNightSleepArray[0], "Бодрствование", (int) Duration.between(previousEndTimeArray[0], LocalDateTime.of(date.plusDays(1), LocalTime.MIDNIGHT)).toMinutes()));
+        } else {
+            intervals = dreams.stream()
+                    .flatMap(dream -> {
+                        List<SleepWakeInterval> currentIntervals = new ArrayList<>();
+                        int awakeMinutes = calculateAwakeMinutes(dream.getDayStart(), dream.getDayFinish(), dream.getNightStart(), dream.getNightFinish());
+
+                        if (dream.getDayStart().isAfter(previousEndTimeArray[0])) {
+                            currentIntervals.add(new SleepWakeInterval(isNightSleepArray[0], "Бодрствование", (int) Duration.between(previousEndTimeArray[0], dream.getDayStart()).toMinutes()));
+                        }
+
+                        int sleepMinutes = (int) Duration.between(dream.getDayStart(), dream.getDayFinish()).toMinutes();
+                        String intervalType = isNightSleepArray[0] ? "Ночной сон" : "Дневной сон";
+                        currentIntervals.add(new SleepWakeInterval(!isNightSleepArray[0], intervalType, sleepMinutes));
+
+                        isNightSleepArray[0] = !isNightSleepArray[0];
+                        previousEndTimeArray[0] = dream.getDayFinish();
+
+                        return currentIntervals.stream();
+                    })
+                    .collect(Collectors.toList());
+
+            if (previousEndTimeArray[0].isBefore(LocalDateTime.of(date.plusDays(1), LocalTime.MIDNIGHT))) {
+                String lastIntervalType = isNightSleepArray[0] ? "Ночной сон" : "Дневной сон";
+                intervals.add(new SleepWakeInterval(isNightSleepArray[0], lastIntervalType, (int) Duration.between(previousEndTimeArray[0], LocalDateTime.of(date.plusDays(1), LocalTime.MIDNIGHT)).toMinutes()));
+            }
+        }
+
+
+        return intervals;
     }
 
- /*  @Override
-    public Map<LocalDateTime, Double> getDiagrams(LocalDateTime dayStart, LocalDateTime dayFinish) {
-        List<Dream> diagrams = dreamRepository.findAllByDayStartIsBeforeAndDayFinishIsAfter(dayStart, dayFinish);
-        diagrams.stream()
-                .map(dreamMapper::toDto)
-                .collect()
-       return null;
-   }*/
+    public int calculateAwakeMinutes(LocalDateTime dayStart, LocalDateTime dayFinish, LocalDateTime nightStart, LocalDateTime nightFinish) {
+        int awakeMinutes = 0;
 
+        if (dayStart != null && dayFinish != null) {
+            awakeMinutes += (int) Duration.between(dayFinish, dayStart).toMinutes();
+        }
+
+        if (nightStart != null && nightFinish != null) {
+            awakeMinutes += (int) Duration.between(nightFinish, nightStart).toMinutes();
+        }
+
+        if (nightStart != null && dayStart != null && nightStart.isBefore(dayStart)) {
+            awakeMinutes += (int) Duration.between(nightStart, dayStart).toMinutes();
+        }
+
+        return awakeMinutes;
+    }
+
+    public class SleepWakeInterval {
+        private boolean isSleep;
+        private String intervalType;
+        private int durationMinutes;
+
+        public SleepWakeInterval(boolean isSleep, String intervalType, int durationMinutes) {
+            this.isSleep = isSleep;
+            this.intervalType = intervalType;
+            this.durationMinutes = durationMinutes;
+        }
+    }
 }
+
+

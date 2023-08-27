@@ -1,11 +1,12 @@
 package ru.dream.checkingsleep.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import ru.dream.checkingsleep.dto.UserDto;
 import ru.dream.checkingsleep.model.Dream;
+import ru.dream.checkingsleep.model.User;
 
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +25,6 @@ public interface DreamRepository extends JpaRepository<Dream, UUID> {
 
     void deleteById(UUID id);
     List <Dream> findByUser(UserDto user);
-
-
+    List<Dream> findByDate(LocalDate date);
     List<Dream> findAllByDayStartIsBeforeAndDayFinishIsAfter(LocalDateTime dayStart, LocalDateTime dayFinish);
 }

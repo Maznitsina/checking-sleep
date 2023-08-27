@@ -15,7 +15,7 @@ public interface UserService {
     public MongoPhotoDto getChildPhoto(UUID id, byte[] photo);
     public  MongoPhotoDto getMomPhoto(UUID id, byte[] photo);
     public MongoPhotoDto getDadPhoto(UUID id, byte[] photo);
-    public MongoPhotoDto updateChildPhoto(UUID id, byte[] photo);
+    //public MongoPhotoDto updateChildPhoto(UUID id, byte[] photo);
     void deleteChildPhoto(UUID id);
     void deleteMomPhoto(UUID id);
     void deleteDadPhoto(UUID id);
