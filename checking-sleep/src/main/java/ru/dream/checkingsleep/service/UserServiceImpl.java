@@ -28,7 +28,8 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.save(userMapper.toEntity(userDto));
         return userMapper.toDto(user);
     }
-    public UserDto updateUser(UserDto userDto){
+
+    public UserDto updateUser(UserDto userDto) {
         User user = userRepository.findById(userDto.getId()).orElseThrow();
         UserDto updateDto = userMapper.toDto(user);
         User user1 = userMapper.toEntity(updateDto);
@@ -39,49 +40,86 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(UUID id) {
         userRepository.deleteById(id);
     }
-    public MongoPhotoDto getChildPhoto(UUID id, byte[] photo){
+
+    public MongoPhotoDto getChildPhoto(UUID id) {
         User user = userRepository.findChildPhotoById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Not found"));
         return mongoPhotoService.getPhotoById(user.getChildPhotoId());
     }
-    public MongoPhotoDto getMomPhoto(UUID id, byte[] photo){
+
+    public MongoPhotoDto getMomPhoto(UUID id) {
         User user = userRepository.findMomPhotoById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Not found"));
         return mongoPhotoService.getPhotoById(user.getMomPhotoId());
     }
-    public MongoPhotoDto getDadPhoto(UUID id, byte[] photo){
+
+    public MongoPhotoDto getDadPhoto(UUID id) {
         User user = userRepository.findDadPhotoById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Not found"));
         return mongoPhotoService.getPhotoById(user.getDadPhotoId());
     }
-    /*public MongoPhotoDto updateChildPhoto(UUID id, byte[] photo){
+
+    public MongoPhotoDto updateChildPhoto(UUID id, MongoPhotoDto mongoPhotoDto) {
         User user = userRepository.findChildPhotoById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Not found"));
-        return mongoPhotoService.updatePhoto(user.getChildPhotoId());
-    }*/
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        MongoPhotoDto currentPhoto = mongoPhotoService.getPhotoById(user.getChildPhotoId());
+        return mongoPhotoService.updatePhoto(currentPhoto);
+    }
+
+    public MongoPhotoDto updateMomPhoto(UUID id, MongoPhotoDto mongoPhotoDto) {
+        User user = userRepository.findMomPhotoById(id)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        MongoPhotoDto currentPhoto = mongoPhotoService.getPhotoById(user.getMomPhotoId());
+        return mongoPhotoService.updatePhoto(currentPhoto);
+    }
+
+    public MongoPhotoDto updateDadPhoto(UUID id, MongoPhotoDto mongoPhotoDto) {
+        User user = userRepository.findDadPhotoById(id)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        MongoPhotoDto currentPhoto = mongoPhotoService.getPhotoById(user.getDadPhotoId());
+        return mongoPhotoService.updatePhoto(currentPhoto);
+    }
+
     public void deleteChildPhoto(UUID id) {
         User user = userRepository.findChildPhotoById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Not found"));
         mongoPhotoService.deletePhoto(user.getChildPhotoId());
     }
+
     public void deleteMomPhoto(UUID id) {
         User user = userRepository.findMomPhotoById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Not found"));
         mongoPhotoService.deletePhoto(user.getMomPhotoId());
     }
+
     public void deleteDadPhoto(UUID id) {
         User user = userRepository.findDadPhotoById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Not found"));
         mongoPhotoService.deletePhoto(user.getDadPhotoId());
     }
-  /*  public void createChildPhoto(UUID id, byte[] photo){
+
+    public void createChildPhoto(UUID id, MongoPhotoDto mongoPhotoDto) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Not found"));
-        String photoId = mongoPhotoService.createPhoto(photo);
-        user.setChildPhotoId(photoId);
+        MongoPhotoDto photoId = mongoPhotoService.createPhoto(mongoPhotoDto);
+        user.setChildPhotoId(String.valueOf(photoId));
         userRepository.save(user);
-    }*/
+    }
 
+    public void createMomPhoto(UUID id, MongoPhotoDto mongoPhotoDto) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Not found"));
+        MongoPhotoDto photoId = mongoPhotoService.createPhoto(mongoPhotoDto);
+        user.setMomPhotoId(String.valueOf(photoId));
+        userRepository.save(user);
+    }
 
+    public void createDadPhoto(UUID id, MongoPhotoDto mongoPhotoDto) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Not found"));
+        MongoPhotoDto photoId = mongoPhotoService.createPhoto(mongoPhotoDto);
+        user.setDadPhotoId(String.valueOf(photoId));
+        userRepository.save(user);
+    }
 
 }

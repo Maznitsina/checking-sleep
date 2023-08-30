@@ -2,13 +2,12 @@ package ru.dream.checkingsleep.controller;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.dream.checkingsleep.dto.DreamCreateDto;
 import ru.dream.checkingsleep.dto.DreamUpdateDto;
+import ru.dream.checkingsleep.dto.SleepWakeInterval;
 import ru.dream.checkingsleep.service.DreamService;
-import ru.dream.checkingsleep.service.DreamServiceImpl;
+
 
 
 import java.time.LocalDate;
@@ -38,12 +37,10 @@ public class DreamController {
         dreamService.deleteDream(id);
     }
 
+
     @GetMapping("/intervals/date-range/{startDate}/{endDate}")
-    public ResponseEntity<Map<LocalDate, List<DreamService.SleepWakeInterval>>> getSleepIntervalsForDateRange(
-            @PathVariable LocalDate startDate,
-            @PathVariable LocalDate endDate) {
-        Map<LocalDate, List<DreamServiceImpl.SleepWakeInterval>> intervalsMap = dreamService.calculateSleepWakeIntervalsForDateRange(startDate, endDate);
-        return new ResponseEntity<>(intervalsMap, HttpStatus.OK);
+    Map<LocalDate, List<SleepWakeInterval>> calculateSleepWakeIntervalsForDateRange(@PathVariable LocalDate startDate, @PathVariable LocalDate endDate) {
+        return dreamService.calculateSleepWakeIntervalsForDateRange(startDate, endDate);
     }
 
 }
