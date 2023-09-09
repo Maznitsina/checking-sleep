@@ -2,14 +2,16 @@ version: '3.8'
 services:
   postgres:
     image: postgres
+    container_name: checking-sleep-postgres-1
     environment:
-      POSTGRES_DB: checking_sleep
+      POSTGRES_DB: checking-sleep
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 257Anna23
     ports:
       - "5432:5432"
 
   mongodb:
+    container_name: checking-sleep-mongodb-1
     image: mongo
     ports:
       - "27017:27017"
@@ -24,7 +26,7 @@ services:
       - postgres
       - mongodb
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/checking_sleep
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/checking-sleep
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: 257Anna23
       SPRING_DATA_MONGODB_HOST: mongodb
