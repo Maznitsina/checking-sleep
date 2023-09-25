@@ -1,4 +1,4 @@
-package ru.dream.checkingsleep.service;
+package ru.dream.checkingsleep.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -7,6 +7,8 @@ import ru.dream.checkingsleep.dto.UserDto;
 import ru.dream.checkingsleep.mappers.UserMapper;
 import ru.dream.checkingsleep.model.User;
 import ru.dream.checkingsleep.repository.UserRepository;
+import ru.dream.checkingsleep.service.MongoPhotoService;
+import ru.dream.checkingsleep.service.UserService;
 
 import java.util.UUID;
 

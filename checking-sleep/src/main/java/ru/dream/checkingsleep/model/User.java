@@ -13,7 +13,7 @@ import java.util.UUID;
 @Getter
 @Entity
 @Setter
-@Table(name = "user")
+@Table(name = "users")
 public class User {
 
     @Id
@@ -33,7 +33,7 @@ public class User {
     private String childName;
 
     @Column(nullable = false)
-    private LocalDate dateOfBirght;
+    private LocalDate dateOfBirth;
 
     @Column
     private String temperament;

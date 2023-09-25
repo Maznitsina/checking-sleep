@@ -1,6 +1,7 @@
-package ru.dream.checkingsleep.service;
+package ru.dream.checkingsleep.service.impl;
 
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.dream.checkingsleep.dto.CommentCreateDto;
@@ -10,6 +11,7 @@ import ru.dream.checkingsleep.mappers.CommentMapper;
 import ru.dream.checkingsleep.model.Comment;
 import ru.dream.checkingsleep.model.Dream;
 import ru.dream.checkingsleep.repository.CommentRepository;
+import ru.dream.checkingsleep.service.CommentService;
 
 import java.util.UUID;
 
@@ -36,7 +38,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public CommentUpdateDto updateComment(CommentUpdateDto commentUpdateDto) {
-        Comment comment = commentRepository.findById(commentUpdateDto.getId()).orElseThrow();
+        Comment comment = commentRepository.findById(commentUpdateDto.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Сущность Comment с id " + commentUpdateDto.getId() + " не найдена"));
         CommentUpdateDto updateComment = commentMapper.toUpdateDto(comment);
         Comment comment1 = commentMapper.toUpdateEntity(updateComment);
         Comment comment2 = commentRepository.save(comment1);

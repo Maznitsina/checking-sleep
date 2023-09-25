@@ -1,6 +1,7 @@
 package ru.dream.checkingsleep.mappers;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 import org.springframework.stereotype.Component;
 import ru.dream.checkingsleep.dto.DreamCreateDto;
 import ru.dream.checkingsleep.dto.DreamDto;
@@ -19,6 +20,8 @@ public interface DreamMapper {
 
     DreamUpdateDto toUpdateDto(Dream dream);
     Dream toUpdateEntity(DreamUpdateDto dreamUpdateDto);
+
+    void updateDreamFromDto(DreamUpdateDto dreamUpdateDto, @MappingTarget Dream dream);
 
 
 }

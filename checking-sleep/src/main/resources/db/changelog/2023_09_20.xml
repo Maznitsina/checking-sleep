@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+    <changeSet id="init db" author="author name">
+        <sql>
+            Create table if not exist dreams (
+            id uuid PRIMARY KEY,
+            dayStart timestamp,
+            dayFinish timestamp,
+            nightStart timestamp,
+            nightFinish timestamp,
+            FOREIGN KEY (tag) REFERENCES tag (tag),
+            FOREIGN KEY (comment) REFERENCES comment (comment)
+            );
+            Create table if not exist users (
+            id uuid PRIMARY KEY,
+            mail varchar NOT NULL,
+            password varchar NOT NULL,
+            childName varchar NOT NULL,
+            dateOfBirth timestamp NOT NULL,
+            temperament varchar,
+            momName varchar,
+            dadName varchar,
+            childPhotoId varchar,
+            momPhotoId varchar,
+            dadPhotoId varchar
+            );
+
+            Create table if not exist comment (
+            id uuid PRIMARY KEY,
+            comment varchar
+            );
+
+            Create table if not exist tag (
+            id uuid PRIMARY KEY,
+            tag varchar
+            );
+
+            Insert into user(mail, password, childName, dateOfBirth) values
+            ('anna12345@mail.ru', '12345erttT', 'Alex', '12.05.2010');
+
+
+        </sql>
+    </changeSet>
+</databaseChangeLog>

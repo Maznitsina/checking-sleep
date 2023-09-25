@@ -2,6 +2,7 @@ package ru.dream.checkingsleep.controller;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.dream.checkingsleep.dto.DreamCreateDto;
 import ru.dream.checkingsleep.dto.DreamUpdateDto;
@@ -33,7 +34,8 @@ public class DreamController {
     }
 
     @DeleteMapping("/delete/{id}")
-    void deleteDream(@PathVariable("id") UUID id) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void deleteDream(@RequestParam("id") UUID id) {
         dreamService.deleteDream(id);
     }
 

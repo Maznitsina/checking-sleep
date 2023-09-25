@@ -1,15 +1,16 @@
-package ru.dream.checkingsleep.service;
+package ru.dream.checkingsleep.service.impl;
 
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.dream.checkingsleep.dto.DreamCreateDto;
 import ru.dream.checkingsleep.dto.DreamUpdateDto;
-import ru.dream.checkingsleep.dto.SleepWakeIntervalWithTagAndComment;
 import ru.dream.checkingsleep.mappers.DreamMapper;
 import ru.dream.checkingsleep.model.Dream;
 import ru.dream.checkingsleep.repository.DreamRepository;
 import ru.dream.checkingsleep.dto.SleepWakeInterval;
+import ru.dream.checkingsleep.service.DreamService;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -34,11 +35,13 @@ public class DreamServiceImpl implements DreamService {
 
     @Override
     public DreamUpdateDto updateDream(DreamUpdateDto dreamUpdateDto) {
-        Dream dream = dreamRepository.findById(dreamUpdateDto.getId()).orElseThrow();
-        DreamUpdateDto dto = dreamMapper.toUpdateDto(dream);
-        Dream dream1 = dreamMapper.toUpdateEntity(dto);
-        Dream dream2 = dreamRepository.save(dream1);
-        return dreamMapper.toUpdateDto(dream2);
+        Dream dream = dreamRepository.findById(dreamUpdateDto.getId())
+                .orElseThrow(() -> new EntityNotFoundException
+                        ("Сущность Dream с id " + dreamUpdateDto.getId() + " не найдена")
+                );
+        dreamMapper.updateDreamFromDto(dreamUpdateDto, dream);
+        Dream updatedDream = dreamRepository.save(dream);
+        return dreamMapper.toUpdateDto(updatedDream);
     }
 
     @Override
@@ -46,6 +49,7 @@ public class DreamServiceImpl implements DreamService {
         dreamRepository.deleteById(id);
     }
 
+    @Override
     public Map<LocalDate, List<SleepWakeInterval>> calculateSleepWakeIntervalsForDateRange(
             LocalDate startDate, LocalDate endDate
     ) {

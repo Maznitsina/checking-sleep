@@ -18,7 +18,7 @@ public class UserDto {
     private String mail;
     private String password;
     private String childName;
-    private LocalDate dateOfBirght;
+    private LocalDate dateOfBirth;
     private String temperament;
     private String momName;
     private String dadName;

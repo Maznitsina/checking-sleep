@@ -10,8 +10,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.dream.checkingsleep.dto.SleepWakeInterval;
 import ru.dream.checkingsleep.model.Dream;
-import ru.dream.checkingsleep.model.User;
 import ru.dream.checkingsleep.repository.DreamRepository;
+import ru.dream.checkingsleep.service.impl.DreamServiceImpl;
 
 
 import java.time.LocalDate;

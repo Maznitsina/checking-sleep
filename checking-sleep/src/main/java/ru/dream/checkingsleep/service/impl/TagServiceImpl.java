@@ -1,4 +1,4 @@
-package ru.dream.checkingsleep.service;
+package ru.dream.checkingsleep.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -7,6 +7,7 @@ import ru.dream.checkingsleep.mappers.TagMapper;
 import ru.dream.checkingsleep.model.Dream;
 import ru.dream.checkingsleep.model.Tag;
 import ru.dream.checkingsleep.repository.TagRepository;
+import ru.dream.checkingsleep.service.TagService;
 
 import java.util.UUID;
 
