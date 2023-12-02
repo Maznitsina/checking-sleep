@@ -6,40 +6,43 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
     <changeSet id="init db" author="author name">
         <sql>
-            Create table if not exist dreams (
-            id uuid PRIMARY KEY,
-            dayStart timestamp,
-            dayFinish timestamp,
-            nightStart timestamp,
-            nightFinish timestamp,
+            Create table if not exist dream (
+            id uuid PRIMARY KEY NOT NULL,
+            day_start timestamp,
+            day_finish timestamp,
+            night_start timestamp,
+            night_finish timestamp,
             FOREIGN KEY (tag) REFERENCES tag (tag),
-            FOREIGN KEY (comment) REFERENCES comment (comment)
+            FOREIGN KEY (comment_id) REFERENCES comment (id),
+            FOREIGN KEY (user_info_id) REFERENCES user_info (id)
             );
-            Create table if not exist users (
-            id uuid PRIMARY KEY,
+            Create table if not exist user_info (
+            id uuid PRIMARY KEY NOT NULL,
             mail varchar NOT NULL,
             password varchar NOT NULL,
-            childName varchar NOT NULL,
-            dateOfBirth timestamp NOT NULL,
+            child_name varchar NOT NULL,
+            date_of_birth date NOT NULL,
             temperament varchar,
-            momName varchar,
-            dadName varchar,
-            childPhotoId varchar,
-            momPhotoId varchar,
-            dadPhotoId varchar
+            mom_name varchar,
+            dad_name varchar,
+            child_photo_id varchar,
+            mom_photo_id varchar,
+            dad_photo_id varchar
             );
 
             Create table if not exist comment (
             id uuid PRIMARY KEY,
-            comment varchar
+            comment varchar,
+            FOREIGN KEY (dream_id) REFERENCES dream (id)
             );
 
             Create table if not exist tag (
             id uuid PRIMARY KEY,
-            tag varchar
+            tag varchar,
+            FOREIGN KEY (dream_id) REFERENCES dream (id)
             );
 
-            Insert into user(mail, password, childName, dateOfBirth) values
+            Insert into userInfo(mail, password, childName, dateOfBirth) values
             ('anna12345@mail.ru', '12345erttT', 'Alex', '12.05.2010');
 
 

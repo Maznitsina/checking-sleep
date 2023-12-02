@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.dream.checkingsleep.dto.MongoPhotoDto;
 import ru.dream.checkingsleep.dto.UserDto;
 import ru.dream.checkingsleep.mappers.UserMapper;
-import ru.dream.checkingsleep.model.User;
+import ru.dream.checkingsleep.model.UserInfo;
 import ru.dream.checkingsleep.repository.UserRepository;
 import ru.dream.checkingsleep.service.MongoPhotoService;
 import ru.dream.checkingsleep.service.UserService;
@@ -21,22 +21,22 @@ public class UserServiceImpl implements UserService {
     private final MongoPhotoService mongoPhotoService;
 
     public UserDto getUserById(UUID id) {
-        User user = userRepository.findById(id)
+        UserInfo userInfo = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Not found"));
-        return userMapper.toDto(user);
+        return userMapper.toDto(userInfo);
     }
 
     public UserDto createUser(UserDto userDto) {
-        User user = userRepository.save(userMapper.toEntity(userDto));
-        return userMapper.toDto(user);
+        UserInfo userInfo = userRepository.save(userMapper.toEntity(userDto));
+        return userMapper.toDto(userInfo);
     }
 
     public UserDto updateUser(UserDto userDto) {
-        User user = userRepository.findById(userDto.getId()).orElseThrow();
-        UserDto updateDto = userMapper.toDto(user);
-        User user1 = userMapper.toEntity(updateDto);
-        User user2 = userRepository.save(user1);
-        return userMapper.toDto(user2);
+        UserInfo userInfo = userRepository.findById(userDto.getId()).orElseThrow();
+        UserDto updateDto = userMapper.toDto(userInfo);
+        UserInfo userInfo1 = userMapper.toEntity(updateDto);
+        UserInfo userInfo2 = userRepository.save(userInfo1);
+        return userMapper.toDto(userInfo2);
     }
 
     public void deleteUser(UUID id) {
@@ -44,84 +44,84 @@ public class UserServiceImpl implements UserService {
     }
 
     public MongoPhotoDto getChildPhoto(UUID id) {
-        User user = userRepository.findChildPhotoById(id)
+        UserInfo userInfo = userRepository.findChildPhotoById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Not found"));
-        return mongoPhotoService.getPhotoById(user.getChildPhotoId());
+        return mongoPhotoService.getPhotoById(userInfo.getChildPhotoId());
     }
 
     public MongoPhotoDto getMomPhoto(UUID id) {
-        User user = userRepository.findMomPhotoById(id)
+        UserInfo userInfo = userRepository.findMomPhotoById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Not found"));
-        return mongoPhotoService.getPhotoById(user.getMomPhotoId());
+        return mongoPhotoService.getPhotoById(userInfo.getMomPhotoId());
     }
 
     public MongoPhotoDto getDadPhoto(UUID id) {
-        User user = userRepository.findDadPhotoById(id)
+        UserInfo userInfo = userRepository.findDadPhotoById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Not found"));
-        return mongoPhotoService.getPhotoById(user.getDadPhotoId());
+        return mongoPhotoService.getPhotoById(userInfo.getDadPhotoId());
     }
 
     public MongoPhotoDto updateChildPhoto(UUID id, MongoPhotoDto mongoPhotoDto) {
-        User user = userRepository.findChildPhotoById(id)
+        UserInfo userInfo = userRepository.findChildPhotoById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
-        MongoPhotoDto currentPhoto = mongoPhotoService.getPhotoById(user.getChildPhotoId());
+        MongoPhotoDto currentPhoto = mongoPhotoService.getPhotoById(userInfo.getChildPhotoId());
         return mongoPhotoService.updatePhoto(currentPhoto);
     }
 
     public MongoPhotoDto updateMomPhoto(UUID id, MongoPhotoDto mongoPhotoDto) {
-        User user = userRepository.findMomPhotoById(id)
+        UserInfo userInfo = userRepository.findMomPhotoById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
-        MongoPhotoDto currentPhoto = mongoPhotoService.getPhotoById(user.getMomPhotoId());
+        MongoPhotoDto currentPhoto = mongoPhotoService.getPhotoById(userInfo.getMomPhotoId());
         return mongoPhotoService.updatePhoto(currentPhoto);
     }
 
     public MongoPhotoDto updateDadPhoto(UUID id, MongoPhotoDto mongoPhotoDto) {
-        User user = userRepository.findDadPhotoById(id)
+        UserInfo userInfo = userRepository.findDadPhotoById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
-        MongoPhotoDto currentPhoto = mongoPhotoService.getPhotoById(user.getDadPhotoId());
+        MongoPhotoDto currentPhoto = mongoPhotoService.getPhotoById(userInfo.getDadPhotoId());
         return mongoPhotoService.updatePhoto(currentPhoto);
     }
 
     public void deleteChildPhoto(UUID id) {
-        User user = userRepository.findChildPhotoById(id)
+        UserInfo userInfo = userRepository.findChildPhotoById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Not found"));
-        mongoPhotoService.deletePhoto(user.getChildPhotoId());
+        mongoPhotoService.deletePhoto(userInfo.getChildPhotoId());
     }
 
     public void deleteMomPhoto(UUID id) {
-        User user = userRepository.findMomPhotoById(id)
+        UserInfo userInfo = userRepository.findMomPhotoById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Not found"));
-        mongoPhotoService.deletePhoto(user.getMomPhotoId());
+        mongoPhotoService.deletePhoto(userInfo.getMomPhotoId());
     }
 
     public void deleteDadPhoto(UUID id) {
-        User user = userRepository.findDadPhotoById(id)
+        UserInfo userInfo = userRepository.findDadPhotoById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Not found"));
-        mongoPhotoService.deletePhoto(user.getDadPhotoId());
+        mongoPhotoService.deletePhoto(userInfo.getDadPhotoId());
     }
 
     public void createChildPhoto(UUID id, MongoPhotoDto mongoPhotoDto) {
-        User user = userRepository.findById(id)
+        UserInfo userInfo = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Not found"));
         MongoPhotoDto photoId = mongoPhotoService.createPhoto(mongoPhotoDto);
-        user.setChildPhotoId(String.valueOf(photoId));
-        userRepository.save(user);
+        userInfo.setChildPhotoId(String.valueOf(photoId));
+        userRepository.save(userInfo);
     }
 
     public void createMomPhoto(UUID id, MongoPhotoDto mongoPhotoDto) {
-        User user = userRepository.findById(id)
+        UserInfo userInfo = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Not found"));
         MongoPhotoDto photoId = mongoPhotoService.createPhoto(mongoPhotoDto);
-        user.setMomPhotoId(String.valueOf(photoId));
-        userRepository.save(user);
+        userInfo.setMomPhotoId(String.valueOf(photoId));
+        userRepository.save(userInfo);
     }
 
     public void createDadPhoto(UUID id, MongoPhotoDto mongoPhotoDto) {
-        User user = userRepository.findById(id)
+        UserInfo userInfo = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Not found"));
         MongoPhotoDto photoId = mongoPhotoService.createPhoto(mongoPhotoDto);
-        user.setDadPhotoId(String.valueOf(photoId));
-        userRepository.save(user);
+        userInfo.setDadPhotoId(String.valueOf(photoId));
+        userRepository.save(userInfo);
     }
 
 }

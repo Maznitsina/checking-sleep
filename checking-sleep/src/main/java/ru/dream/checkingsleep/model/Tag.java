@@ -16,8 +16,7 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "dream")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     private Dream dream;
 
     @Column

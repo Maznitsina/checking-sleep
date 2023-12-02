@@ -8,7 +8,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -31,7 +30,7 @@ import java.util.UUID;
 @Setter
 @Entity
 @Builder
-@Table(name = "dreams")
+@Table(name = "dream")
 
 public class Dream {
     @Id
@@ -39,8 +38,7 @@ public class Dream {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
-    @JoinColumn(name = "user")
-    private User user;
+    private UserInfo userInfo;
 
     @Column
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")

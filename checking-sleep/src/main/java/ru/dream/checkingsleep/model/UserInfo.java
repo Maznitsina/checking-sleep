@@ -13,8 +13,8 @@ import java.util.UUID;
 @Getter
 @Entity
 @Setter
-@Table(name = "users")
-public class User {
+@Table(name = "userInfo")
+public class UserInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
